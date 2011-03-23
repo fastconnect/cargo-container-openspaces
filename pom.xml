@@ -26,7 +26,7 @@
 
 	<repositories>
 		<repository>
-			<id>repo.opensource.fastconnect.org</id>
+			<id>opensource.fastconnect.org</id>
 			<name>OpenSource FastConnect Repository</name>
 			<url>http://opensource.fastconnect.org/maven/content/repositories/opensource</url>
 		</repository>
@@ -86,7 +86,6 @@
 		</developer>
 		<developer>
 			<name>Julien ELUARD</name>
-			<email>julien@fastconnect.fr</email>
 			<timezone>+1</timezone>
 			<roles>
 				<role>developer</role>
