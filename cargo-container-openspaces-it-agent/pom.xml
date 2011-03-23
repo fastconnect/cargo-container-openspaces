@@ -1,0 +1,144 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>cargo-container-openspaces-parent</artifactId>
+		<groupId>org.fastconnect.opensource</groupId>
+		<version>0.9.11-SNAPSHOT</version>
+	</parent>
+	<groupId>org.fastconnect.opensource</groupId>
+	<artifactId>cargo-container-openspaces-it-agent</artifactId>
+	<name>Agent Integration test</name>
+	<description>Test the Agent Container and deployer</description>
+
+	<properties>
+		<cargo.out.dir>target/cargo/logs</cargo.out.dir>
+		<gsc.vm.options>-Xms512m -Xmx512m -XX:+UseConcMarkSweepGC
+			-XX:+UseParNewGC -XX:+CMSInitiatingOccupancyFraction=60
+			-XX:+UseCMSInitiatingOccupancyOnly -XX:ExplicitGCInvokesConcurrent</gsc.vm.options>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.fastconnect.opensource</groupId>
+			<artifactId>cargo-container-openspaces-sample-pu</artifactId>
+			<version>0.9.11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.fastconnect.opensource</groupId>
+						<artifactId>cargo-container-openspaces</artifactId>
+						<version>0.9.11-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>com.gigaspaces</groupId>
+						<artifactId>gs-openspaces</artifactId>
+						<version>${gs.version}</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<wait>false</wait>
+					<container>
+						<containerId>openspaces7x</containerId>
+						<implementation>fr.fastconnect.cargo.container.openspaces.remote.OpenSpaces7xRemoteContainer</implementation>
+						<output>${cargo.out.dir}/openspaces-grid.out.log</output>
+						<log>${cargo.out.dir}/openspaces-grid.log.log</log>
+						<type>remote</type>
+					</container>
+					<configuration>
+						<implementation>fr.fastconnect.cargo.container.openspaces.remote.OpensSpaces7xRemoteConfiguration</implementation>
+						<type>runtime</type>
+						<properties>
+							<lookup.groups>${project.artifactId}</lookup.groups>
+							<lookup.locators>localhost:4166</lookup.locators>
+						</properties>
+					</configuration>
+					<deployer>
+						<implementation>fr.fastconnect.cargo.container.openspaces.deployer.OpenSpacesDeployer</implementation>
+						<type>remote</type>
+						<deployables>
+							<deployable>
+								<implementation>fr.fastconnect.cargo.container.openspaces.deployable.GridDeployable</implementation>
+								<properties>
+									<expectedGsaCount>1</expectedGsaCount>
+									<gsmCount>1</gsmCount>
+									<gscCount>4</gscCount>
+									<!-- if you work with a secured gsa you may need secure access -->
+									<gridUser>grid</gridUser>
+									<gridPassword>grid</gridPassword>
+									<!-- to configure the tuning for the gsc -->
+									<gscVmOptions>${gsc.vm.options}</gscVmOptions>
+								</properties>
+							</deployable>
+							<deployable>
+								<implementation>fr.fastconnect.cargo.container.openspaces.deployable.ProcessingUnitDeployable</implementation>
+								<groupId>${project.groupId}</groupId>
+								<artifactId>cargo-container-openspaces-sample-pu</artifactId>
+								<properties>
+									<lookupGroups>${project.artifactId}</lookupGroups>
+									<lookupLocators>localhost:4166</lookupLocators>
+									<overrideName>cargo-openspaces-container-it-cluster</overrideName>
+									<clusterSchema>partitioned-sync2backup</clusterSchema>
+									<maxPerVM>1</maxPerVM>
+									<numberOfInstances>2</numberOfInstances>
+									<numberOfBackup>1</numberOfBackup>
+									<secured>false</secured>
+<!--									<userName>pu</userName>-->
+<!--									<userPassword>pu</userPassword>-->
+<!--									<provisionUser>pu</provisionUser>-->
+<!--									<provisionPassword>pu</provisionPassword>-->
+									<contextPropertiesFile>${project.basedir}/src/test/resources/agent-space-it.properties</contextPropertiesFile>
+								</properties>
+							</deployable>
+						</deployables>
+					</deployer>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-container</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<!-- <goal>start</goal> -->
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop-container</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>undeploy</goal>
+							<!-- <goal>stop</goal> -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>failsafe-maven-plugin</artifactId>
+				<version>2.4.3-alpha-1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

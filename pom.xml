@@ -1,0 +1,135 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.fastconnect.opensource</groupId>
+	<artifactId>cargo-container-openspaces-parent</artifactId>
+	<version>0.9.11-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>FastConnect OpenSpaces Cargo container Parent</name>
+
+	<description>
+		Provides OpenSpaces container support to Cargo for GigaSpaces 7.x and 8.x
+	</description>
+
+	<modules>
+		<module>cargo-container-openspaces</module>
+		<module>cargo-container-openspaces-sample-pu</module>
+		<module>cargo-container-openspaces-it-agent</module>
+	</modules>
+
+	<properties>
+		<java.src.version>1.5</java.src.version>
+		<license.type>lgpl</license.type>
+		<cargo.version>1.0</cargo.version>
+		<gs.version>8.0.0</gs.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>repo.opensource.fastconnect.org</id>
+			<name>OpenSource FastConnect Repository</name>
+			<url>http://opensource.fastconnect.org/maven/content/repositories/opensource</url>
+		</repository>
+	</repositories>
+
+	<organization>
+		<name>FastConnect</name>
+		<url>http://www.fastconnect.fr</url>
+	</organization>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-core</artifactId>
+				<version>${cargo.version}</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-core-container-tomcat</artifactId>
+				<version>${cargo.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gigaspaces</groupId>
+				<artifactId>gs-openspaces</artifactId>
+				<version>${gs.version}</version>
+				<scope>provided</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<url>
+		http://opensource.fastconnect.org/projects/cargo-container-openspaces/
+	</url>
+	<inceptionYear>2009</inceptionYear>
+	<licenses>
+		<license>
+			<name>LGPL</name>
+			<url>http://www.gnu.org/licenses/lgpl.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Luc BOUTIER</name>
+			<email>luc.boutier@fastconnect.fr</email>
+			<timezone>+1</timezone>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Julien ELUARD</name>
+			<email>julien@fastconnect.fr</email>
+			<timezone>+1</timezone>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.src.version}</source>
+					<target>${java.src.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<!-- Environment Settings (http://maven.apache.org/pom.html#Environment_Settings) -->
+	<scm>
+		<connection>
+			scm:svn:http://opensource.fastconnect.org/svn/openspaces-plugins/cargo-container-openspaces/trunk
+		</connection>
+		<developerConnection>
+			scm:svn:https://opensource.fastconnect.org/svn/openspaces-plugins/cargo-container-openspaces/trunk
+		</developerConnection>
+		<url>
+			http://opensource.fastconnect.org/svn/openspaces-plugins/cargo-container-openspaces/trunk
+		</url>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>repo.opensource.fastconnect.org</id>
+			<name>OpenSource FastConnect Repository</name>
+			<url>http://opensource.fastconnect.org/maven/content/repositories/opensource</url>
+		</repository>
+	</distributionManagement>
+
+	<issueManagement>
+		<system>Redmine</system>
+		<url>
+			https://opensource.fastconnect.org/redmine/projects/show/cargo-container-os
+		</url>
+	</issueManagement>
+</project>

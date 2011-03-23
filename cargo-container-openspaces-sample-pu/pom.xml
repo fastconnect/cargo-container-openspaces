@@ -1,0 +1,13 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>cargo-container-openspaces-parent</artifactId>
+		<groupId>org.fastconnect.opensource</groupId>
+		<version>0.9.11-SNAPSHOT</version>
+	</parent>
+	<groupId>org.fastconnect.opensource</groupId>
+	<artifactId>cargo-container-openspaces-sample-pu</artifactId>
+	<name>Cargo OpenSpaces Container Sample PU</name>
+	<description>Sample processing unit to be deployed in Cargo OpenSpaces container tests.</description>
+</project>
