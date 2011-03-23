@@ -26,9 +26,26 @@
 
 	<repositories>
 		<repository>
-			<id>opensource.fastconnect.org</id>
+			<id>repo.opensource.fastconnect.org</id>
 			<name>OpenSource FastConnect Repository</name>
 			<url>http://opensource.fastconnect.org/maven/content/repositories/opensource</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>repo.snapshot.opensource.fastconnect.org</id>
+			<name>OpenSource FastConnect Snapshot Repository</name>
+			<url>http://opensource.fastconnect.org/maven/content/repositories/opensource-snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -123,6 +140,11 @@
 			<name>OpenSource FastConnect Repository</name>
 			<url>http://opensource.fastconnect.org/maven/content/repositories/opensource</url>
 		</repository>
+		<snapshotRepository>
+			<id>repo.snapshot.opensource.fastconnect.org</id>
+			<name>OpenSource FastConnect Snapshot Repository</name>
+			<url>http://opensource.fastconnect.org/maven/content/repositories/opensource-snapshot</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<issueManagement>
