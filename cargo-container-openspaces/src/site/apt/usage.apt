@@ -1,0 +1,139 @@
+~~
+~~ Copyright (C) 2009 FastConnect
+~~ 
+~~ Cargo OpenSpaces Container is free software: you can redistribute it and/or modify
+~~ it under the terms of the GNU Lesser General Public License as published by
+~~ the Free Software Foundation, either version 3 of the License, or
+~~ (at your option) any later version.
+~~ 
+~~ Cargo OpenSpaces Container is distributed in the hope that it will be useful,
+~~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+~~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~~ GNU General Public License for more details.
+~~ 
+~~ You should have received a copy of the GNU Lesser General Public License
+~~ along with this program.  If not, see <http://www.gnu.org/licenses/lgpl.txt>.
+~~
+
+ 
+ 
+Configuration
+ 
+ Cargo is based on different components:
+ 
+    * Container which is the application server or grid on which you want to deploy your artifacts (applications).
+    
+    Each container has is own configuration to set-it up before starting it or to be able to connect to it.
+    
+    * Deployer that can be used to deploy your artifacts on the server. The deployer is not mandatory as the container can also provide a default one. Especially for installed containers. 
+
+    * Deployable which actually is the artifact you want to deploy.
+ 
+* Container types
+ 
+ Cargo OpenSpaces container supports different types of containers depending on the way you want to deploy and test your processing units.
+ 
+    * Installed local container (Start a grid based on local GigaSpaces installation)
+    
+    * Remote container (Uses a remote grid to deploy your applications)
+    
+    * Agent managed (Uses agent capabilities to deploy a grid on your integration testing environment and deploy your applications)
+ 
+** Installed local container
+ 
+ The installed local container will start a GigaSpaces grid on the build machine (this can be your developer machine or the integration test one - hudson or any other system).
+ 
+ This containers requires a GigaSpaces installation on the build machine. This is why it is mostly dedicated to developer machine test. It also won't uses any other resources than the current machine so is not dedicated to scale or perform any load testing etc..
+ 
+ This container is implemented by fr.fastconnect.cargo.container.openspaces.installed.OpenSpaces7xInstalledLocalContainer class and must be used with associated:
+ 
+    * local configuration (fr.fastconnect.cargo.container.openspaces.installed.OpensSpaces7xInstalledLocalConfiguration)
+ 
+    * deployables (fr.fastconnect.cargo.container.openspaces.ProcessingUnitDeployable)
+ 
+ Configuration sample:
+ 
++--
+...
+
+...
++--
+
+** Remote container
+ 
+ The remote container is used to deploy artifacts on top of a running GigaSpaces grid (you'll need a GSC and GSM running somewhere on your network).
+ 
+ This container is implemented by fr.fastconnect.cargo.container.openspaces.remote.OpenSpaces7xRemoteContainer class and must be used with associated:
+  
+    * remote configuration (fr.fastconnect.cargo.container.openspaces.remote.OpensSpaces7xRemoteConfiguration)
+    
+    * deployer (fr.fastconnect.cargo.container.openspaces.ProcessingUnitDeployer)
+    
+    * deployables (fr.fastconnect.cargo.container.openspaces.ProcessingUnitDeployable)
+
+ Configuration sample:
+
++--
+...
+
+...
++--
+
+
+
+* Processing Unit deployable
+
+ Cargo deployable metaphor is implemented as fr.fastconnect.cargo.container.openspaces.ProcessingUnitDeployable. This implementation is used for all processing unit containers.
+ Deployable can be used with following project packaging types:
+ 
+    * jar: target/classes folder will be used as processing unit folder
+    
+    * pu: generated pu will be used as processing unit folder
+    
+ Location value can be provided to give the full path of a pu structure.
+
+
+
+** Lifecycle binding
+
+ Cargo can be configured to be automatically started/stopped during the integration-test maven lifecycle through the binding concept. 
+ Using following configuration associated maven container will be started before the integration phase and stopped after.
+ 
++--
+...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        ...
+        <executions>
+          <execution>
+            <id>start-container</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-container</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+...
++--
+
+ Maven integration-test phase can be launched using following command:
+ 
++--
+mvn integration-test
++-- 
+
+ Note: the documentation details only GigaSpaces 7.x and 8.x configurations.
+ The package includes a GigaSpaces 6.x implementation that contains only a subset of features. As GigaSpaces 6.x is not supported anymore we didn't detailed the usage for such containers.

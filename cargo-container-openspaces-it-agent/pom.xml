@@ -24,6 +24,13 @@
 			<artifactId>cargo-container-openspaces-sample-pu</artifactId>
 			<version>0.9.11-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.gigaspaces</groupId>
+			<artifactId>gs-openspaces</artifactId>
+			<version>${gs.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -60,7 +67,7 @@
 						<type>remote</type>
 					</container>
 					<configuration>
-						<implementation>fr.fastconnect.cargo.container.openspaces.remote.OpensSpaces7xRemoteConfiguration</implementation>
+						<implementation>fr.fastconnect.cargo.container.openspaces.remote.OpenSpaces7xRemoteConfiguration</implementation>
 						<type>runtime</type>
 						<properties>
 							<lookup.groups>${project.artifactId}</lookup.groups>
@@ -89,18 +96,16 @@
 								<groupId>${project.groupId}</groupId>
 								<artifactId>cargo-container-openspaces-sample-pu</artifactId>
 								<properties>
-									<lookupGroups>${project.artifactId}</lookupGroups>
-									<lookupLocators>localhost:4166</lookupLocators>
 									<overrideName>cargo-openspaces-container-it-cluster</overrideName>
 									<clusterSchema>partitioned-sync2backup</clusterSchema>
 									<maxPerVM>1</maxPerVM>
 									<numberOfInstances>2</numberOfInstances>
 									<numberOfBackup>1</numberOfBackup>
 									<secured>false</secured>
-<!--									<userName>pu</userName>-->
-<!--									<userPassword>pu</userPassword>-->
-<!--									<provisionUser>pu</provisionUser>-->
-<!--									<provisionPassword>pu</provisionPassword>-->
+									<!-- <userName>pu</userName> -->
+									<!-- <userPassword>pu</userPassword> -->
+									<!-- <provisionUser>pu</provisionUser> -->
+									<!-- <provisionPassword>pu</provisionPassword> -->
 									<contextPropertiesFile>${project.basedir}/src/test/resources/agent-space-it.properties</contextPropertiesFile>
 								</properties>
 							</deployable>
@@ -112,7 +117,7 @@
 						<id>start-container</id>
 						<phase>pre-integration-test</phase>
 						<goals>
-							<!-- <goal>start</goal> -->
+							<goal>deployer-start</goal>
 							<goal>deploy</goal>
 						</goals>
 					</execution>
@@ -121,7 +126,7 @@
 						<phase>post-integration-test</phase>
 						<goals>
 							<goal>undeploy</goal>
-							<!-- <goal>stop</goal> -->
+							<goal>deployer-stop</goal>
 						</goals>
 					</execution>
 				</executions>
